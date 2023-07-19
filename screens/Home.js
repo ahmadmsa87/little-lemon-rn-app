@@ -15,7 +15,7 @@ import {
   createTable,
   getMenuItems,
   saveMenuItems,
-  filterByQueryAndCategories,
+  filterItems,
 } from "../database";
 import Constants from "expo-constants";
 import Wrapper from "../components/Wrapper";
@@ -146,16 +146,16 @@ export default function Home(props) {
   useUpdateEffect(() => {
     (async () => {
       const activeCategories = sections.filter((s, i) => {
+        // If all filters are deselected, all categories are active
         if (filterSelections.every((item) => item === false)) {
           return true;
         }
         return filterSelections[i];
       });
+      console.log(activeCategories);
       try {
-        const menuItems = await filterByQueryAndCategories(
-          query,
-          activeCategories
-        );
+        const menuItems = await filterItems(query, activeCategories);
+        console.log(menuItems);
         const sectionListData = getSectionListData(menuItems);
         setData(sectionListData);
       } catch (e) {
@@ -176,9 +176,9 @@ export default function Home(props) {
   };
 
   const handleFiltersChange = async (index) => {
-    const arrayCopy = [...filterSelections];
-    arrayCopy[index] = !filterSelections[index];
-    setFilterSelections(arrayCopy);
+    const filtersCopy = [...filterSelections];
+    filtersCopy[index] = !filterSelections[index];
+    setFilterSelections(filtersCopy);
   };
 
   return (
@@ -279,6 +279,45 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#dee3e9",
   },
+  avatarEmpty: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: "#0b9a6a",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  heroSection: {
+    backgroundColor: "#495e57",
+    padding: 15,
+  },
+  heroHeader: {
+    color: "#f4ce14",
+    fontSize: 54,
+    fontFamily: "MarkaziText-Medium",
+  },
+  heroHeader2: {
+    color: "#fff",
+    fontSize: 30,
+    fontFamily: "MarkaziText-Medium",
+  },
+  heroText: {
+    color: "#fff",
+    fontFamily: "Karla-Medium",
+    fontSize: 14,
+  },
+  heroBody: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  heroContent: {
+    flex: 1,
+  },
+  heroImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 12,
+  },
   logo: {
     height: 50,
     width: 150,
@@ -342,45 +381,6 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     borderRadius: 25,
-  },
-  avatarEmpty: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: "#0b9a6a",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  heroSection: {
-    backgroundColor: "#495e57",
-    padding: 15,
-  },
-  heroHeader: {
-    color: "#f4ce14",
-    fontSize: 54,
-    fontFamily: "MarkaziText-Medium",
-  },
-  heroHeader2: {
-    color: "#fff",
-    fontSize: 30,
-    fontFamily: "MarkaziText-Medium",
-  },
-  heroText: {
-    color: "#fff",
-    fontFamily: "Karla-Medium",
-    fontSize: 14,
-  },
-  heroBody: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  heroContent: {
-    flex: 1,
-  },
-  heroImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 12,
   },
   delivery: {
     fontSize: 18,

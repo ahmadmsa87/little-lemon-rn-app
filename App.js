@@ -102,24 +102,22 @@ export default function App() {
         <Stack.Navigator>
           {status.isOnboardingCompleted ? (
             <>
-              <Stack.Screen name="Home" component={Home} />
+              <Stack.Screen
+                name="Home"
+                component={Home}
+                options={{ headerShown: false }}
+              />
               <Stack.Screen name="Profile" component={Profile} />
             </>
           ) : (
-            <Stack.Screen name="Onboarding" component={Onboarding} />
+            <Stack.Screen
+              name="Onboarding"
+              component={Onboarding}
+              options={{ headerShown: false }}
+            />
           )}
         </Stack.Navigator>
       </NavigationContainer>
     </AuthContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 0,
-    padding: 0,
-    backgroundColor: "#fff",
-    alignItems: "center",
-  },
-});

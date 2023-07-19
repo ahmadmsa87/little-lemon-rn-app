@@ -33,8 +33,6 @@ export default function Wrapper(props) {
 const styles = StyleSheet.create({
   conatiner: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
     backgroundColor: "#fff",
   },
 });

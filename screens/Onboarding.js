@@ -36,7 +36,7 @@ export default function Onboarding(props) {
         <View style={styles.header}>
           <Image
             style={styles.logo}
-            source={require("../assets/imges/little-lemon-logo.png")}
+            source={require("../assets/images/little-lemon-logo.png")}
             accessible={true}
             accessibilityLabel={"Little Lemon"}
           />

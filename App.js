@@ -1,16 +1,52 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import Onboarding from "./screens/Onboarding";
 import { AuthContext } from "./store/AuthContext";
+import Loading from "./screens/Loading";
+import Profile from "./screens/Profile";
+import Home from "./screens/Home";
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [status, setStatus] = useState({
-    isLoading: true,
+    isLoading: false,
     isOnboardingCompleted: false,
   });
+
+  useEffect(() => {
+    (async () => {
+      let profileData = [];
+      try {
+        const getProfile = await AsyncStorage.getItem("profile");
+        if (getProfile !== null) {
+          profileData = getProfile;
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        if (Object.keys(profileData).length != 0) {
+          setStatus({
+            ...status,
+            isLoading: false,
+            isOnboardingCompleted: true,
+          });
+        } else {
+          setStatus({
+            ...status,
+            isLoading: false,
+            isOnboardingCompleted: false,
+          });
+        }
+      }
+    })();
+  }, []);
 
   const authContext = useMemo(
     () => ({
@@ -55,12 +91,25 @@ export default function App() {
     }),
     []
   );
+
+  if (status.isLoading) {
+    return <Loading />;
+  }
   return (
     <AuthContext.Provider value={authContext}>
       <StatusBar style="dark" />
-      <View style={styles.container}>
-        <Onboarding />
-      </View>
+      <NavigationContainer>
+        <Stack.Navigator>
+          {status.isOnboardingCompleted ? (
+            <>
+              <Stack.Screen name="Home" component={Home} />
+              <Stack.Screen name="Profile" component={Profile} />
+            </>
+          ) : (
+            <Stack.Screen name="Onboarding" component={Onboarding} />
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
     </AuthContext.Provider>
   );
 }

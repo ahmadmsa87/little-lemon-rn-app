@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
@@ -24,8 +24,17 @@ export default function Wrapper(props) {
   }
 
   return (
-    <View onLayout={onLayoutRootView} {...props}>
+    <View onLayout={onLayoutRootView} {...props} style={styles.conatiner}>
       {props.children}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  conatiner: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#fff",
+  },
+});

@@ -114,6 +114,8 @@ const styles = StyleSheet.create({
   inputSection: {
     backgroundColor: "#dddddd",
     padding: 20,
+    marginLeft: 20,
+    marginRight: 20,
     borderRadius: 10,
   },
   tabContainer: {

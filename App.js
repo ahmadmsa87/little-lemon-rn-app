@@ -16,7 +16,7 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const [status, setStatus] = useState({
-    isLoading: false,
+    isLoading: true,
     isOnboardingCompleted: false,
   });
 
@@ -74,7 +74,7 @@ export default function App() {
 
         setStatus({
           ...status,
-          isLoading: true,
+          isLoading: false,
           isOnboardingCompleted: false,
         });
       },

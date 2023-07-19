@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Image,
@@ -12,11 +12,11 @@ import {
 } from "react-native";
 
 import Constants from "expo-constants";
-
+import { AuthContext } from "../store/AuthContext";
 import Wrapper from "../components/Wrapper";
 import { validateName, validateEmail } from "../utilities";
 
-const Onboarding = () => {
+export default function Onboarding(props) {
   const [firstName, onChangeFirstName] = useState("");
   const [lastName, onChangeLastName] = useState("");
   const [email, onChangeEmail] = useState("");
@@ -24,6 +24,8 @@ const Onboarding = () => {
   const isEmailValid = validateEmail(email);
   const isFirstNameValid = validateName(firstName);
   const isLastNameValid = validateName(lastName);
+
+  const { onboard } = useContext(AuthContext);
 
   return (
     <Wrapper>
@@ -79,7 +81,7 @@ const Onboarding = () => {
                 ? ""
                 : styles.btnDisabled,
             ]}
-            onPress={() => {}}
+            onPress={() => onboard({ firstName, lastName, email })}
             disabled={!isEmailValid}
           >
             <Text style={styles.btntext}>Submit</Text>
@@ -91,7 +93,7 @@ const Onboarding = () => {
       </KeyboardAvoidingView>
     </Wrapper>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -172,5 +174,3 @@ const styles = StyleSheet.create({
     backgroundColor: "#dee3e9",
   },
 });
-
-export default Onboarding;
